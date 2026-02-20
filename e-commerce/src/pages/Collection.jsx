@@ -1,8 +1,14 @@
+// src/pages/Collection.jsx
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { ShopContext } from "../context/ShopContext";
 
 const Collection = () => {
-  const { products } = useContext(ShopContext);
+  const {
+    products,
+    toggleWishlist,
+    isInWishlist
+  } = useContext(ShopContext);
 
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -24,7 +30,7 @@ const Collection = () => {
     );
   };
 
-  // Filtering logic with improved search
+  // Filtering logic
   const filteredProducts = products
     .filter((item) => {
       const matchCategory =
@@ -69,13 +75,9 @@ const Collection = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-    {/* Sorting */}
-        <div
-          className={`border border-gray-400 pl-5 py-3 mt-4 ${
-            showFilters ? "" : "hidden"
-          } sm:block`}
-        >
-          
+
+        {/* Sorting */}
+        <div className={`border border-gray-400 pl-5 py-3 mt-4 ${showFilters ? "" : "hidden"} sm:block`}>
           <p className="mb-3 text-sm font-medium">SORT BY</p>
           <select
             className="text-sm px-2 py-1 border rounded w-40"
@@ -86,27 +88,25 @@ const Collection = () => {
             <option value="lowToHigh">Price: Low to High</option>
             <option value="highToLow">Price: High to Low</option>
           </select>
-              {/* Clear Filters */}
-        <button
-          onClick={() => {
-            setSelectedCategories([]);
-            setSelectedTypes([]);
-            setSearchQuery("");
-            setSortOrder("");
-          }}
-          className={`mt-4 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded border ${
-            showFilters ? "" : "hidden"
-          } sm:block`}
-        >
-          Clear All Filters
-        </button>
+
+          {/* Clear Filters */}
+          <button
+            onClick={() => {
+              setSelectedCategories([]);
+              setSelectedTypes([]);
+              setSearchQuery("");
+              setSortOrder("");
+            }}
+            className={`mt-4 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded border ${
+              showFilters ? "" : "hidden"
+            } sm:block`}
+          >
+            Clear All Filters
+          </button>
         </div>
+
         {/* Category Filter */}
-        <div
-          className={`border border-gray-400 pl-5 py-3 mt-4 ${
-            showFilters ? "" : "hidden"
-          } sm:block`}
-        >
+        <div className={`border border-gray-400 pl-5 py-3 mt-4 ${showFilters ? "" : "hidden"} sm:block`}>
           <p className="mb-3 text-sm font-medium">CATEGORIES</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             {["Men", "Women", "Boys", "Girls"].map((cat) => (
@@ -125,11 +125,7 @@ const Collection = () => {
         </div>
 
         {/* SubCategory Filter */}
-        <div
-          className={`border border-gray-400 pl-5 py-3 mt-4 ${
-            showFilters ? "" : "hidden"
-          } sm:block`}
-        >
+        <div className={`border border-gray-400 pl-5 py-3 mt-4 ${showFilters ? "" : "hidden"} sm:block`}>
           <p className="mb-3 text-sm font-medium">TYPE</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             {["TopWear", "BottomWear", "Footwear", "Accessories"].map((type) => (
@@ -146,10 +142,6 @@ const Collection = () => {
             ))}
           </div>
         </div>
-
-    
-
-    
       </div>
 
       {/* Products Section */}
@@ -157,23 +149,33 @@ const Collection = () => {
         {filteredProducts.length === 0 ? (
           <p className="text-gray-600 mt-10 text-center">No products found.</p>
         ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="border rounded-lg p-3 hover:shadow-md transition duration-300"
+                className="relative border rounded-lg p-3 hover:shadow-md transition duration-300"
               >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-40 w-full object-cover rounded"
-                />
-                <h3 className="text-sm mt-2 font-semibold">{product.name}</h3>
-                <p className="text-gray-500 text-xs">
-                  {product.category} • {product.subCategory}
-                </p>
-                <p className="text-black font-bold mt-1">₹{product.price}</p>
+                {/* ❤️ Wishlist Heart */}
+                <button
+                  onClick={() => toggleWishlist(product.id)}
+                  className="absolute top-2 right-2 text-2xl z-10"
+                >
+                  {isInWishlist(product.id) ? "♥" : "♡"}
+                </button>
+
+                {/* Product Image & Info wrapped in Link */}
+                <Link to={`/product/${product.id}`}>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-40 w-full object-cover rounded"
+                  />
+                  <h3 className="text-sm mt-2 font-semibold">{product.name}</h3>
+                  <p className="text-gray-500 text-xs">
+                    {product.category} • {product.subCategory}
+                  </p>
+                  <p className="text-black font-bold mt-1">₹{product.price}</p>
+                </Link>
               </div>
             ))}
           </div>

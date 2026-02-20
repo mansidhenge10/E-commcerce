@@ -7,7 +7,9 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
 
-  const { products,getCartCount } = useContext(ShopContext); // Get products
+const { products, getCartCount, getWishlistCount } =
+  useContext(ShopContext);
+ // Get products
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -101,19 +103,26 @@ const Navbar = () => {
 
         {/* Profile Icon */}
         <div className="group relative">
-          <img
+         <Link to ="/login"> <img
             className="w-5 cursor-pointer"
             src="/src/assets/user.png"
             alt="user"
           />
+          </Link>
           <div className="group-hover:block hidden absolute top-full left-1/2 -translate-x-[40%] z-50 pt-2">
             <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-white text-gray-700 shadow-md">
               <Link to="/profile">My Profile</Link>
-              <p>Orders</p>
+            <Link to="/orders">Orders</Link>
               <p>Logout</p>
             </div>
           </div>
         </div>
+{/* Wishlist Icon */}
+
+<Link to="/wishlist" className="text-3xl cursor-pointer">
+♡
+</Link>
+
 
         {/* Cart Icon */}
         <Link to="/cart" className="relative">

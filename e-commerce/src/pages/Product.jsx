@@ -6,7 +6,9 @@ import { ShopContext } from "../context/ShopContext";
 
 const Product = () => {
   const { id } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+const { products, currency, addToCart } = useContext(ShopContext);
+
+const { toggleWishlist, isInWishlist } = useContext(ShopContext);
 
   const product = products.find(p => p.id === id);
 
@@ -97,16 +99,16 @@ Pair it with heels or sandals to complete the look.
 </button>
 
   {/* Wishlist Heart Button */}
-  <button
-    onClick={() => setWishlist(!wishlist)}
-    className="text-2xl flex items-center justify-center h-[40px] w-[40px] transition"
-  >
-    {wishlist ? (
-      <span className="text-red-500">❤️</span> // filled red heart
-    ) : (
-      <span className="text-black">🤍</span> // empty heart
-    )}
-  </button>
+ <button
+  onClick={() => toggleWishlist(product.id)} // <-- use ShopContext toggle
+  className="text-3xl flex items-center justify-center h-[40px] w-[40px] transition"
+>
+  {isInWishlist(product.id) ? (
+    <span className="text-red-500">♥</span> // filled heart if in wishlist
+  ) : (
+    <span className="text-gray-500">♡</span> // empty heart if not in wishlist
+  )}
+</button>
 </div>
 <hr className="border-t border-gray-300 my-4" />
 {/* Below Add to Cart button */}

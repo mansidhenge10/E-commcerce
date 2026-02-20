@@ -16,6 +16,7 @@ import OurStory from "./pages/OurStory";
 import UserProfile from "./pages/UserProfile";
 import SearchResults from "./pages/SearchResults";
 import { ShopContext } from "./context/ShopContext.jsx";
+import Wishlist from "./pages/Wishlist";
 
 const App = () => {
   const { products } = useContext(ShopContext); // Get products from context
@@ -37,6 +38,8 @@ const App = () => {
         <Route path="/orders" element={<Orders />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/login" element={<Login />} />
+<Route path="/wishlist" element={<Wishlist />} />
+   <Route path="/checkout" element={<PlaceOrder />} />
 
         {/* ✅ Search results page */}
         <Route path="/search" element={<SearchResults />} />

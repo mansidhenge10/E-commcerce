@@ -1,10 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import aboutImage from "../assets/aboutimg.jpg"; // ✅ Make sure this path is correct
+import Title from '../compoents/Title'
+import aboutImage from "../assets/aboutimg.jpg"; 
 
 const About = () => {
   return (
+ 
 <div className="text-gray-800 font-sans">
+   <div className="text-2xl text-center pt-8 border-t">
+    <Title text1={'ABOUT'} text2={'US'}/>
+  </div>
 {/* 🔥 Hero Section */}
 <section className="w-full bg-[#FFF5E5]">
   <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center md:items-stretch">

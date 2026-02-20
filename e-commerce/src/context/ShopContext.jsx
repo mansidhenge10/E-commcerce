@@ -7,11 +7,12 @@ const ShopContextProvider = ({ children }) => {
   const currency = "₹";
   const delivery_fee = 10;
 
+  /* ================= CART STATE ================= */
   const [cartItems, setCartItems] = useState({});
 
   // ✅ ADD TO CART
   const addToCart = (itemId, size) => {
-    setCartItems(prev => {
+    setCartItems((prev) => {
       const cartData = structuredClone(prev);
 
       if (!cartData[itemId]) cartData[itemId] = {};
@@ -23,7 +24,7 @@ const ShopContextProvider = ({ children }) => {
 
   // ✅ REMOVE FROM CART
   const removeFromCart = (itemId, size, removeAll = false) => {
-    setCartItems(prev => {
+    setCartItems((prev) => {
       const cartData = structuredClone(prev);
       if (!cartData[itemId]) return prev;
 
@@ -44,7 +45,7 @@ const ShopContextProvider = ({ children }) => {
     });
   };
 
-  // ✅ CART COUNT (for icon)
+  // ✅ CART COUNT (Navbar badge)
   const getCartCount = () => {
     let total = 0;
     for (const id in cartItems) {
@@ -55,16 +56,48 @@ const ShopContextProvider = ({ children }) => {
     return total;
   };
 
+  /* ================= WISHLIST STATE ================= */
+  const [wishlistItems, setWishlistItems] = useState([]);
+
+  // ❤️ ADD / REMOVE WISHLIST (toggle)
+  const toggleWishlist = (itemId) => {
+    setWishlistItems((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId]
+    );
+  };
+
+  // ❤️ REMOVE FROM WISHLIST
+  const removeFromWishlist = (itemId) => {
+    setWishlistItems((prev) => prev.filter((id) => id !== itemId));
+  };
+
+  // ❤️ WISHLIST COUNT (Navbar badge)
+  const getWishlistCount = () => wishlistItems.length;
+
+  // ❤️ CHECK IF ITEM IN WISHLIST
+  const isInWishlist = (itemId) => wishlistItems.includes(itemId);
+
   return (
     <ShopContext.Provider
       value={{
         products,
         currency,
         delivery_fee,
+
+        // cart
         cartItems,
         addToCart,
         removeFromCart,
-        getCartCount
+        getCartCount,
+
+        // wishlist
+        wishlistItems,
+        toggleWishlist,
+        removeFromWishlist,
+        getWishlistCount,
+        isInWishlist,
       }}
     >
       {children}
