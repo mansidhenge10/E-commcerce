@@ -8,8 +8,8 @@ import Login from './components/Login'
 import Add from './pages/Add'
 import List from './pages/List'
 import Orders from './pages/Orders'
-
-function App() {
+ export const backendURl = import.meta.env.VITE_BACKEND_URL 
+const App=() =>{
 
   const [token, setToken] = useState('');
 
